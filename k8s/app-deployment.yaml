@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: tuusuario/mi-proyecto:latest
+        image: jvicmar95/mi-proyecto:latest
         ports:
         - containerPort: 80
 ---
