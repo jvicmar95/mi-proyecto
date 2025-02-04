@@ -1,6 +1,15 @@
 FROM jenkins/jenkins:lts-jdk17
 USER root
 
+# Verificar grupo existente con GID 0
+RUN if getent group 0 >/dev/null; then \
+        existing_group=$(getent group 0 | cut -d: -f1); \
+        usermod -aG $existing_group jenkins; \
+    else \
+        groupadd -g 0 host-root && \
+        usermod -aG host-root jenkins; \
+    fi
+
 # Instalar Docker CLI
 RUN apt-get update && \
     apt-get install -y ca-certificates curl gnupg && \

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jenkins
-        image: jvicmar95/jenkins-docker:lts
+        image: jvicmar95/jenkins-docker:root-gid
         ports:
         - containerPort: 8080
         - containerPort: 50000
