@@ -13,27 +13,28 @@ spec:
         app: jenkins
     spec:
       securityContext:
-        fsGroup: 0  # Este es el lugar adecuado para fsGroup
+        fsGroup: 0  # Esto permite a Jenkins acceder a los volúmenes como el socket Docker
       containers:
       - name: jenkins
-        image: jvicmar95/jenkins-docker:root-gid
+        image: jvicmar95/jenkins-docker:latest  # Usa la imagen que has creado
         ports:
         - containerPort: 8080
         - containerPort: 50000
         volumeMounts:
         - name: jenkins-data
           mountPath: /var/jenkins_home
-        - name: docker-sock  # Montar el socket de Docker
+        - name: docker-sock  # Montar el socket Docker
           mountPath: /var/run/docker.sock
         securityContext:
-          runAsUser: 1000  # El UID de jenkins
-          runAsGroup: 0    # El GID para el grupo root (deberías usar el GID que obtuviste)
+          runAsUser: 1000  # El UID de Jenkins
+          runAsGroup: 0    # El GID del grupo root
+          privileged: true  # Necesario para permitir que Jenkins ejecute Docker
       volumes:
       - name: jenkins-data
         emptyDir: {}
-      - name: docker-sock  # Volumen para el socket
+      - name: docker-sock  # Volumen para el socket Docker
         hostPath:
-          path: /var/run/docker.sock
+          path: /var/run/docker.sock  # Ruta del socket Docker en el host
 ---
 apiVersion: v1
 kind: Service
