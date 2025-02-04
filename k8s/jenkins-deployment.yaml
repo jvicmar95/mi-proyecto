@@ -1,4 +1,3 @@
-# k8s/jenkins-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +12,8 @@ spec:
       labels:
         app: jenkins
     spec:
+      securityContext:
+        fsGroup: 0  # Este es el lugar adecuado para fsGroup
       containers:
       - name: jenkins
         image: jvicmar95/jenkins-docker:root-gid
@@ -25,7 +26,8 @@ spec:
         - name: docker-sock  # Montar el socket de Docker
           mountPath: /var/run/docker.sock
         securityContext:
-          privileged: true  # Necesario para DinD
+          runAsUser: 1000  # El UID de jenkins
+          runAsGroup: 0    # El GID para el grupo root (deberías usar el GID que obtuviste)
       volumes:
       - name: jenkins-data
         emptyDir: {}
