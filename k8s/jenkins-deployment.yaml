@@ -22,9 +22,16 @@ spec:
         volumeMounts:
         - name: jenkins-data
           mountPath: /var/jenkins_home
+        - name: docker-sock  # Montar el socket de Docker
+          mountPath: /var/run/docker.sock
+        securityContext:
+          privileged: true  # Necesario para DinD
       volumes:
       - name: jenkins-data
         emptyDir: {}
+      - name: docker-sock  # Volumen para el socket
+        hostPath:
+          path: /var/run/docker.sock
 ---
 apiVersion: v1
 kind: Service
