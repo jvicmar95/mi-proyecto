@@ -11,6 +11,15 @@ pipeline {
     }
     
     stages {
+        stage('Check Docker Daemon') {
+            steps {
+                script {
+                    // Verificar si Docker está corriendo dentro de Jenkins
+                    sh 'docker info || exit 1'  // Esto debe pasar si Docker está correctamente configurado
+                }
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 script {
