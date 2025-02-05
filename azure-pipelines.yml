@@ -7,15 +7,15 @@ pool:
 steps:
 - script: |
     echo "Build.SourcesDirectory: $(Build.SourcesDirectory)"
-    ls -la $(Build.SourcesDirectory)
-  displayName: 'Mostrar información del repositorio y la ruta'
+    ls -la $(Build.SourcesDirectory)  # Verificar que el Dockerfile y los archivos estén presentes
+  displayName: 'Verificar Build.SourcesDirectory y archivos'
 
-- task: Checkout@1  # Cambia Checkout@2 a Checkout@1
+- task: Checkout@1  # Asegúrate de que esto esté al principio
 
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub'  # Nombre del Docker registry
-    repository: 'jvicmar95/mi-proyecto'  # Tu repositorio de Docker Hub
+    repository: 'jvicmar95/azuredevops'  # Tu repositorio de Docker Hub (actualiza si usas otro)
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'  # Ruta al Dockerfile
     tags: 'latest'  # Etiqueta para la imagen
