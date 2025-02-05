@@ -13,10 +13,11 @@ steps:
 - task: Checkout@1  # Asegúrate de que esto esté al principio
 
 - task: Docker@2
+  displayName: 'Build y push de la imagen'
   inputs:
-    containerRegistry: 'dockerhub'  # Nombre del Docker registry
-    repository: 'jvicmar95/azuredevops'  # Tu repositorio de Docker Hub (actualiza si usas otro)
+    containerRegistry: 'dockerhub'  # Nombre de la conexión de servicio a Docker Hub
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'  # Ruta al Dockerfile
     tags: 'latest'  # Etiqueta para la imagen
     buildContext: '$(Build.SourcesDirectory)'  # Ruta de los archivos fuente
+    repository: 'jvicmar95/azuredevops'  # Tu repositorio de Docker Hub
