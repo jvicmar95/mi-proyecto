@@ -1,29 +1,17 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
-- main
+- main  # Cambia 'main' por el nombre de tu rama principal si es diferente
 
-resources:
-- repo: self
+pool:
+  vmImage: 'ubuntu-latest'  # Usamos una imagen Ubuntu para construir el contenedor
 
-variables:
-  tag: '$(Build.BuildId)'
+steps:
+- task: Checkout@1  # Cambia Checkout@2 a Checkout@1
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerhub'  # Nombre del Docker registry
+    repository: 'jvicmar95/azuredevops'  # Tu repositorio de Docker Hub
+    command: 'buildAndPush'
+    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'  # Ruta al Dockerfile
+    tags: 'latest'  # Etiqueta para la imagen
+    buildContext: '$(Build.SourcesDirectory)'  # Ruta de los archivos fuente
