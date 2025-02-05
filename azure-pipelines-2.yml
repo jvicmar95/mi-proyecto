@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'  # Usamos una imagen Ubuntu para construir el contenedor
 
 steps:
-- task: Checkout@2  # Tarea para hacer checkout de tu repo en GitHub
+- task: Checkout@1  # Cambia Checkout@2 a Checkout@1
 
 - task: Docker@2
   inputs:
