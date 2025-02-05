@@ -1,0 +1,17 @@
+trigger:
+- main  # Cambia 'main' por el nombre de tu rama principal si es diferente
+
+pool:
+  vmImage: 'ubuntu-latest'  # Usamos una imagen Ubuntu para construir el contenedor
+
+steps:
+- task: Checkout@2  # Tarea para hacer checkout de tu repo en GitHub
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerhub'  # Nombre del Docker registry
+    repository: 'jvicmar95/azuredevops'  # Tu repositorio de Docker Hub
+    command: 'buildAndPush'
+    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'  # Ruta al Dockerfile
+    tags: 'latest'  # Etiqueta para la imagen
+    buildContext: '$(Build.SourcesDirectory)'  # Ruta de los archivos fuente
